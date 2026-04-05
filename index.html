@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vision Career — Phase 0 Accuracy Test</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #08111f, #0d1a2d, #06101b);
+      color: #fff;
+      padding: 32px 16px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: rgba(17, 30, 52, 0.96);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .top-card,
+    .section-card,
+    .result-card,
+    .rating-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 720px) {
+      .row.two {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    label.top-label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: none;
+      outline: none;
+      border-radius: 14px;
+      background: #f2f2f2;
+      color: #111;
+      font-size: 1rem;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+    }
+
+    .section-desc {
+      margin: 0 0 14px;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.45;
+    }
+
+    fieldset.question {
+      border: none;
+      padding: 0;
+      margin: 0 0 18px;
+    }
+
+    legend {
+      font-weight: 800;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option {
+      display: block;
+      cursor: pointer;
+    }
+
+    .option input {
+      display: none;
+    }
+
+    .option span {
+      display: block;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.9);
+      transition: 0.15s ease;
+      line-height: 1.4;
+    }
+
+    .option input:checked + span {
+      background: #17385d;
+      border-color: #5ee7ff;
+      color: #fff;
+      box-shadow: 0 0 0 1px #5ee7ff inset;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 14px;
+      background: gold;
+      color: #111;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      filter: brightness(0.96);
+    }
+
+    .btn.secondary {
+      background: #5ee7ff;
+    }
+
+    .actions {
+      margin-top: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result-box {
+      margin-top: 10px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(94, 231, 255, 0.08);
+      border: 1px solid rgba(94, 231, 255, 0.35);
+    }
+
+    .result-main {
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .small {
+      color: rgba(255,255,255,0.75);
+      line-height: 1.5;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-weight: 700;
+    }
+
+    .error {
+      color: #ffb7c5;
+    }
+
+    .success {
+      color: #9effc8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Vision Career — Phase 0 Accuracy Test</h1>
+    <p class="subtitle">
+      Standalone website to test whether the Phase 0 discovery questions produce accurate college-direction results.
+    </p>
+
+    <div class="top-card">
+      <div class="row two">
+        <div>
+          <label class="top-label" for="level">Level</label>
+          <select id="level">
+            <option>High School</option>
+            <option>University</option>
+          </select>
+        </div>
+        <div>
+          <label class="top-label" for="know_major">Do you know what you want?</label>
+          <select id="know_major">
+            <option>No</option>
+            <option>Yes</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;">
+        <label class="top-label" for="expected_major">
+          If yes, what do you think you want?
+        </label>
+        <input id="expected_major" type="text" placeholder="Example: computer science, accounting, architecture..." />
+      </div>
+    </div>
+
+    <form id="phase0Form">
+      <div class="section-card">
+        <h2>Section A — Interest</h2>
+        <p class="section-desc">What the student naturally likes.</p>
+        <div id="sectionA"></div>
+      </div>
+
+      <div class="section-card">
+        <h2>Section B — Capability</h2>
+        <p class="section-desc">What the student feels able to handle.</p>
+        <div id="sectionB"></div>
+      </div>
+
+      <div class="section-card">
+        <h2>Section C — Friction</h2>
+        <p class="section-desc">What the student avoids or dislikes.</p>
+        <div id="sectionC"></div>
+      </div>
+
+      <div class="section-card">
+        <h2>Section D — Work Style</h2>
+        <p class="section-desc">How the student behaves in real situations.</p>
+        <div id="sectionD"></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" type="button" id="getResultBtn">Get Result</button>
+      </div>
+    </form>
+
+    <div id="resultCard" class="result-card hidden">
+      <h2>Predicted Result</h2>
+      <div id="resultBox" class="result-box"></div>
+    </div>
+
+    <div id="ratingCard" class="rating-card hidden">
+      <h2>Rate the Result</h2>
+
+      <fieldset class="question">
+        <legend>Does this result match you?</legend>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="is_correct" value="yes" />
+            <span>Yes</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="is_correct" value="partially" />
+            <span>Partially</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="is_correct" value="no" />
+            <span>No</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div style="margin-top:14px;">
+        <label class="top-label" for="feedback">Feedback</label>
+        <textarea id="feedback" placeholder="What felt accurate or inaccurate?"></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn secondary" type="button" id="submitBtn">Submit Evaluation</button>
+      </div>
+
+      <div id="status" class="status"></div>
+    </div>
+  </div>
+
+  <script>
+    const API = "https://script.google.com/macros/s/AKfycbxQyPyrXrXhbHNJnHui51qjv-6jAlUg5_SeXKl9T9Wpxd7LQ4BEEnQ7hUmqhy7L4no_Ew/exec";
+    
+    const sections = {
+      A: [
+        {
+          id: "a1",
+          text: "Which activity sounds most enjoyable?",
+          options: [
+            { label: "Building a system or app", scores: { it: 3, engineering: 2, science: 1 } },
+            { label: "Running experiments and discovering how things work", scores: { science: 3, engineering: 1 } },
+            { label: "Analyzing money, markets, or business decisions", scores: { finance: 3 } },
+            { label: "Designing visuals, spaces, or creative ideas", scores: { architecture: 3 } }
+          ]
+        },
+        {
+          id: "a2",
+          text: "Which subject pulls your attention the most?",
+          options: [
+            { label: "Math / Physics", scores: { engineering: 3, it: 2, science: 1 } },
+            { label: "Chemistry / Biology", scores: { science: 3 } },
+            { label: "Business / Economics", scores: { finance: 3 } },
+            { label: "Art / Design", scores: { architecture: 3 } }
+          ]
+        },
+        {
+          id: "a3",
+          text: "What kind of result would make you proud?",
+          options: [
+            { label: "A working technical system", scores: { it: 3, engineering: 2 } },
+            { label: "A scientific discovery or explanation", scores: { science: 3 } },
+            { label: "A profitable business solution", scores: { finance: 3 } },
+            { label: "A beautiful design or structure", scores: { architecture: 3 } }
+          ]
+        },
+        {
+          id: "a4",
+          text: "What kind of content do you enjoy most?",
+          options: [
+            { label: "Tech / coding / systems", scores: { it: 3, engineering: 1 } },
+            { label: "Science / experiments", scores: { science: 3 } },
+            { label: "Finance / entrepreneurship", scores: { finance: 3 } },
+            { label: "Design / architecture", scores: { architecture: 3 } }
+          ]
+        }
+      ],
+      B: [
+        {
+          id: "b1",
+          text: "How comfortable are you solving multi-step math problems?",
+          options: [
+            { label: "Very comfortable", scores: { engineering: 3, finance: 2, it: 1 } },
+            { label: "Somewhat comfortable", scores: { engineering: 2, finance: 1, science: 1 } },
+            { label: "Neutral", scores: { architecture: 1 } },
+            { label: "I struggle", scores: { architecture: 2 } }
+          ]
+        },
+        {
+          id: "b2",
+          text: "Can you understand abstract concepts (like physics theories)?",
+          options: [
+            { label: "Very easily", scores: { engineering: 3, science: 2, it: 1 } },
+            { label: "With effort", scores: { engineering: 2, science: 1 } },
+            { label: "Rarely", scores: { finance: 1, architecture: 1 } },
+            { label: "Not at all", scores: { architecture: 2 } }
+          ]
+        },
+        {
+          id: "b3",
+          text: "How do you deal with complex problems?",
+          options: [
+            { label: "Break them step by step", scores: { it: 3, engineering: 2 } },
+            { label: "Experiment until it works", scores: { science: 3 } },
+            { label: "Analyze outcomes", scores: { finance: 3 } },
+            { label: "Avoid them", scores: { architecture: 1 } }
+          ]
+        },
+        {
+          id: "b4",
+          text: "How strong are you in calculations?",
+          options: [
+            { label: "Strong", scores: { engineering: 3, finance: 2, science: 1 } },
+            { label: "Average", scores: { engineering: 1, finance: 1, it: 1 } },
+            { label: "Weak", scores: { architecture: 2 } },
+            { label: "Very weak", scores: { architecture: 3 } }
+          ]
+        },
+        {
+          id: "b5",
+          text: "How do you feel about lab work?",
+          options: [
+            { label: "Very comfortable", scores: { science: 3 } },
+            { label: "Interested", scores: { science: 2, engineering: 1 } },
+            { label: "Neutral", scores: { it: 1, finance: 1 } },
+            { label: "Not interested", scores: { finance: 1, architecture: 1 } }
+          ]
+        }
+      ],
+      C: [
+        {
+          id: "c1",
+          text: "Which task would drain your energy most?",
+          options: [
+            { label: "Heavy math", scores: { engineering: -3, finance: -2, it: -1 } },
+            { label: "Lab work", scores: { science: -3 } },
+            { label: "Business decisions", scores: { finance: -3 } },
+            { label: "Designing visuals", scores: { architecture: -3 } }
+          ]
+        },
+        {
+          id: "c2",
+          text: "Which environment would you avoid?",
+          options: [
+            { label: "Technical systems", scores: { it: -3, engineering: -1 } },
+            { label: "Research labs", scores: { science: -3 } },
+            { label: "Business environment", scores: { finance: -3 } },
+            { label: "Design studios", scores: { architecture: -3 } }
+          ]
+        },
+        {
+          id: "c3",
+          text: "What work would you NOT choose even if it pays well?",
+          options: [
+            { label: "Engineering", scores: { engineering: -3 } },
+            { label: "Scientific research", scores: { science: -3 } },
+            { label: "Business", scores: { finance: -3 } },
+            { label: "Design", scores: { architecture: -3 } }
+          ]
+        }
+      ],
+      D: [
+        {
+          id: "d1",
+          text: "In a team, what role fits you?",
+          options: [
+            { label: "Builder", scores: { it: 3, engineering: 2 } },
+            { label: "Researcher", scores: { science: 3 } },
+            { label: "Planner", scores: { finance: 3 } },
+            { label: "Designer", scores: { architecture: 3 } }
+          ]
+        },
+        {
+          id: "d2",
+          text: "What challenge excites you?",
+          options: [
+            { label: "Logical problems", scores: { it: 3, engineering: 2 } },
+            { label: "Scientific discovery", scores: { science: 3 } },
+            { label: "Business decisions", scores: { finance: 3 } },
+            { label: "Creative design", scores: { architecture: 3 } }
+          ]
+        },
+        {
+          id: "d3",
+          text: "How do you make decisions?",
+          options: [
+            { label: "Logic", scores: { it: 3, engineering: 2 } },
+            { label: "Experiments", scores: { science: 3 } },
+            { label: "Risk analysis", scores: { finance: 3 } },
+            { label: "Creativity", scores: { architecture: 3 } }
+          ]
+        }
+      ]
+    };
+
+    const sectionTargets = {
+      A: document.getElementById("sectionA"),
+      B: document.getElementById("sectionB"),
+      C: document.getElementById("sectionC"),
+      D: document.getElementById("sectionD")
+    };
+
+    function renderSection(items, mount) {
+      items.forEach((question, qIndex) => {
+        const fieldset = document.createElement("fieldset");
+        fieldset.className = "question";
+
+        const legend = document.createElement("legend");
+        legend.textContent = question.text;
+        fieldset.appendChild(legend);
+
+        const options = document.createElement("div");
+        options.className = "options";
+
+        question.options.forEach((option, optIndex) => {
+          const id = `${question.id}_${optIndex}`;
+
+          const label = document.createElement("label");
+          label.className = "option";
+
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = question.id;
+          input.value = optIndex;
+          input.id = id;
+
+          const span = document.createElement("span");
+          span.textContent = option.label;
+
+          label.appendChild(input);
+          label.appendChild(span);
+          options.appendChild(label);
+        });
+
+        fieldset.appendChild(options);
+        mount.appendChild(fieldset);
+      });
+    }
+
+    renderSection(sections.A, sectionTargets.A);
+    renderSection(sections.B, sectionTargets.B);
+    renderSection(sections.C, sectionTargets.C);
+    renderSection(sections.D, sectionTargets.D);
+
+    let latestPredicted = "";
+    let latestAnswers = {};
+
+    function allQuestions() {
+      return [...sections.A, ...sections.B, ...sections.C, ...sections.D];
+    }
+
+    function computeScores(answerMap) {
+      const scores = {
+        it: 0,
+        engineering: 0,
+        science: 0,
+        finance: 0,
+        architecture: 0
+      };
+
+      allQuestions().forEach(question => {
+        const selectedIndex = answerMap[question.id];
+        if (selectedIndex === undefined) return;
+        const option = question.options[selectedIndex];
+        Object.entries(option.scores).forEach(([key, value]) => {
+          scores[key] += value;
+        });
+      });
+
+      return scores;
+    }
+
+    function titleCaseCollege(key) {
+      const map = {
+        it: "IT",
+        engineering: "Engineering",
+        science: "Science",
+        finance: "Finance",
+        architecture: "Architecture"
+      };
+      return map[key] || key;
+    }
+
+    function collectAnswers() {
+      const answers = {};
+      let complete = true;
+
+      allQuestions().forEach(question => {
+        const checked = document.querySelector(`input[name="${question.id}"]:checked`);
+        if (!checked) {
+          complete = false;
+          return;
+        }
+        answers[question.id] = Number(checked.value);
+      });
+
+      return { complete, answers };
+    }
+
+    function buildReadableAnswers(answerMap) {
+      const out = [];
+
+      allQuestions().forEach(question => {
+        const selectedIndex = answerMap[question.id];
+        const selectedOption = question.options[selectedIndex];
+        out.push({
+          question_id: question.id,
+          question: question.text,
+          selected_option: selectedOption.label
+        });
+      });
+
+      return out;
+    }
+
+    document.getElementById("getResultBtn").addEventListener("click", async () => {
+      const { complete, answers } = collectAnswers();
+      if (!complete) {
+        alert("Answer all 15 questions first.");
+        return;
+      }
+
+      latestAnswers = answers;
+
+      const scores = computeScores(answers);
+      const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+      latestPredicted = ranked[0][0];
+
+      const topScore = ranked[0][1];
+      const secondScore = ranked[1][1];
+      const confidence = topScore <= 0
+        ? 0
+        : Math.max(50, Math.min(95, Math.round((topScore / (topScore + Math.max(secondScore, 1))) * 100)));
+
+      document.getElementById("resultBox").innerHTML = `
+        <div class="result-main">${titleCaseCollege(latestPredicted)}</div>
+        <div class="small">Confidence: ${confidence}%</div>
+        <div class="small" style="margin-top:8px;">
+          Runner-up: ${titleCaseCollege(ranked[1][0])}
+        </div>
+      `;
+
+      document.getElementById("resultCard").classList.remove("hidden");
+      document.getElementById("ratingCard").classList.remove("hidden");
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", async () => {
+      if (!latestPredicted) {
+        alert("Get the result first.");
+        return;
+      }
+
+      const correctChoice = document.querySelector('input[name="is_correct"]:checked');
+      if (!correctChoice) {
+        alert("Choose whether the result matches or not.");
+        return;
+      }
+
+      const status = document.getElementById("status");
+      status.textContent = "Saving...";
+      status.className = "status";
+
+      const payload = new FormData();
+      payload.append("level", document.getElementById("level").value);
+      payload.append("know_major", document.getElementById("know_major").value);
+      payload.append("expected_major", document.getElementById("expected_major").value.trim());
+      payload.append("answers", JSON.stringify(buildReadableAnswers(latestAnswers)));
+      payload.append("predicted", titleCaseCollege(latestPredicted));
+      payload.append("is_correct", correctChoice.value);
+      payload.append("feedback", document.getElementById("feedback").value.trim());
+
+      try {
+        await fetch(API, {
+          method: "POST",
+          body: payload
+        });
+
+        status.textContent = "Saved successfully.";
+        status.className = "status success";
+      } catch (err) {
+        status.textContent = "Could not save. Check the script URL.";
+        status.className = "status error";
+      }
+    });
+  </script>
+</body>
+</html>

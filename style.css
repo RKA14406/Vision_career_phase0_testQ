@@ -1,0 +1,61 @@
+body {
+  background: linear-gradient(135deg, #0a1625, #0f223d);
+  color: white;
+  font-family: Arial;
+  padding: 40px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: #111e34;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: none;
+}
+
+textarea {
+  min-height: 80px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px;
+  background: gold;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: orange;
+}
+
+.question {
+  margin-top: 20px;
+}
+
+.radio-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
