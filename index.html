@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vision Career — Phase 0 Accuracy Test</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #08111f, #0d1a2d, #06101b);
+      color: #fff;
+      padding: 32px 16px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: rgba(17, 30, 52, 0.96);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .top-card,
+    .section-card,
+    .result-card,
+    .rating-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 720px) {
+      .row.two {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    label.top-label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: none;
+      outline: none;
+      border-radius: 14px;
+      background: #f2f2f2;
+      color: #111;
+      font-size: 1rem;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+    }
+
+    .section-desc {
+      margin: 0 0 14px;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.45;
+    }
+
+    fieldset.question {
+      border: none;
+      padding: 0;
+      margin: 0 0 18px;
+    }
+
+    legend {
+      font-weight: 800;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option {
+      display: block;
+      cursor: pointer;
+    }
+
+    .option input {
+      display: none;
+    }
+
+    .option span {
+      display: block;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.9);
+      transition: 0.15s ease;
+      line-height: 1.4;
+    }
+
+    .option input:checked + span {
+      background: #17385d;
+      border-color: #5ee7ff;
+      color: #fff;
+      box-shadow: 0 0 0 1px #5ee7ff inset;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 14px;
+      background: gold;
+      color: #111;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      filter: brightness(0.96);
+    }
+
+    .btn.secondary {
+      background: #5ee7ff;
+    }
+
+    .actions {
+      margin-top: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result-box {
+      margin-top: 10px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(94, 231, 255, 0.08);
+      border: 1px solid rgba(94, 231, 255, 0.35);
+    }
+
+    .result-main {
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .small {
+      color: rgba(255,255,255,0.75);
+      line-height: 1.5;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-weight: 700;
+    }
+
+    .error {
+      color: #ffb7c5;
+    }
+
+    .success {
+      color: #9effc8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Vision Career — Phase 0 Accuracy Test</h1>
+    <p class="subtitle">
+      Standalone website to test whether the Phase 0 discovery questions produce accurate college-direction results.
+    </p>
+
+    <div class="top-card">
+      <div class="row two">
+        <div>
+          <label class="top-label" for="level">Level</label>
+          <select id="level">
+            <option>High School</option>
+            <option>University</option>
+          </select>
+        </div>
+        <div>
+          <label class="top-label" for="know_major">Do you know what you want?</label>
+          <select id="know_major">
+            <option>No</option>
+            <option>Yes</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;">
+        <label class="top-label" for="expected_major">
+          If yes, what do you think you want?
+        </label>
+        <input id="expected_major" type="text" placeholder="Example: computer science, accounting, architecture..." />
+      </div>
+    </div>
+
+    <form id="phase0Form">
+      <div class="section-card">
+        <h2>Section A — Interest</h2>
+        <p class="section-desc">What the student naturally likes.</p>
+        <div id="sectionA"></div>
+      </div>
+
+      <div class="section-card">
+        <h2>Section B — Capability</h2>
+        <p class="section-desc">What the student feels able to handle.</p>
+        <div id="sectionB"></div>
+      </div>
+
+      <div class="section-card">
+        <h2>Section C — Friction</h2>
+        <p class="section-desc">What the student avoids or dislikes.</p>
+        <div id="sectionC"></div>
+      </div>
+
+      <div class="section-card">
+        <h2>Section D — Work Style</h2>
+        <p class="section-desc">How the student behaves in real situations.</p>
+        <div id="sectionD"></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" type="button" id="getResultBtn">Get Result</button>
+      </div>
+    </form>
+
+    <div id="resultCard" class="result-card hidden">
+      <h2>Predicted Result</h2>
+      <div id="resultBox" class="result-box"></div>
+    </div>
+
+    <div id="ratingCard" class="rating-card hidden">
+      <h2>Rate the Result</h2>
+
+      <fieldset class="question">
+        <legend>Does this result match you?</legend>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="is_correct" value="yes" />
+            <span>Yes</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="is_correct" value="partially" />
+            <span>Partially</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="is_correct" value="no" />
+            <span>No</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div style="margin-top:14px;">
+        <label class="top-label" for="feedback">Feedback</label>
+        <textarea id="feedback" placeholder="What felt accurate or inaccurate?"></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn secondary" type="button" id="submitBtn">Submit Evaluation</button>
+      </div>
+
+      <div id="status" class="status"></div>
+    </div>
+  </div>
+  <script src="questions.js"></script>
+  <script>
+    const API = "https://script.google.com/macros/s/AKfycbxQyPyrXrXhbHNJnHui51qjv-6jAlUg5_SeXKl9T9Wpxd7LQ4BEEnQ7hUmqhy7L4no_Ew/exec";
+
+    const sectionTargets = {
+      A: document.getElementById("sectionA"),
+      B: document.getElementById("sectionB"),
+      C: document.getElementById("sectionC"),
+      D: document.getElementById("sectionD")
+    };
+
+    function renderSection(items, mount) {
+      items.forEach(q => {
+        const fieldset = document.createElement("fieldset");
+        fieldset.className = "question";
+
+        const legend = document.createElement("legend");
+        legend.textContent = q.question;
+
+        const options = document.createElement("div");
+        options.className = "options";
+
+        q.options.forEach((opt, i) => {
+          const label = document.createElement("label");
+          label.className = "option";
+
+          label.innerHTML = `
+            <input type="radio" name="${q.id}" value="${i}">
+            <span>${opt.text}</span>
+          `;
+
+          options.appendChild(label);
+        });
+
+        fieldset.appendChild(legend);
+        fieldset.appendChild(options);
+        mount.appendChild(fieldset);
+      });
+    }
+
+    Object.keys(sections).forEach(key => {
+      renderSection(sections[key], sectionTargets[key]);
+    });
+
+    function allQuestions() {
+      return Object.values(sections).flat();
+    }
+
+    function collectAnswers() {
+      const answers = {};
+      let complete = true;
+
+      allQuestions().forEach(q => {
+        const checked = document.querySelector(`input[name="${q.id}"]:checked`);
+        if (!checked) complete = false;
+        else answers[q.id] = Number(checked.value);
+      });
+
+      return { complete, answers };
+    }
+
+    function computeScores(answerMap) {
+      const scores = { IT: 0, Engineering: 0, Science: 0, Finance: 0, Design: 0 };
+
+      allQuestions().forEach(q => {
+        const index = answerMap[q.id];
+        if (index === undefined) return;
+
+        const opt = q.options[index];
+        Object.entries(opt.scores).forEach(([k, v]) => {
+          scores[k] += v * q.weight;
+        });
+      });
+
+      return scores;
+    }
+
+    function buildAnswers(answerMap) {
+      return allQuestions().map(q => ({
+        question: q.question,
+        selected_option: q.options[answerMap[q.id]].text
+      }));
+    }
+
+    let latestAnswers = {};
+    let latestPredicted = "";
+
+    document.getElementById("getResultBtn").onclick = () => {
+      const { complete, answers } = collectAnswers();
+      if (!complete) return alert("Answer all questions.");
+
+      latestAnswers = answers;
+
+      const scores = computeScores(answers);
+      const ranked = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+      latestPredicted = ranked[0][0];
+
+      document.getElementById("resultBox").innerHTML =
+        `<div class="result-main">${latestPredicted}</div>`;
+
+      document.getElementById("resultCard").classList.remove("hidden");
+      document.getElementById("ratingCard").classList.remove("hidden");
+    };
+
+    document.getElementById("submitBtn").onclick = async () => {
+      const correct = document.querySelector('input[name="is_correct"]:checked');
+      if (!correct) return alert("Select accuracy.");
+
+      const payload = new FormData();
+      payload.append("level", document.getElementById("level").value);
+      payload.append("know_major", document.getElementById("know_major").value);
+      payload.append("expected_major", document.getElementById("expected_major").value);
+      payload.append("answers", JSON.stringify(buildAnswers(latestAnswers)));
+      payload.append("predicted", latestPredicted);
+      payload.append("is_correct", correct.value);
+      payload.append("feedback", document.getElementById("feedback").value);
+
+      try {
+        await fetch(API, { method: "POST", body: payload });
+        alert("Saved");
+      } catch {
+        alert("Error saving");
+      }
+    };
+  </script>
+</body>
+</html>
